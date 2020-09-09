@@ -8,9 +8,19 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
-  var id = counter.getNextUniqueId((err, id) => {});
-  items[id] = text;
-  callback(null, { id, text });
+  // Write new file
+  // If the dataDir DNE yet, make a brand new directory and first file starting at counter 00001 and add todo to the file
+  // Otherwise getNextUniqueId and store a new todo
+  counter.getNextUniqueId((err, id) => {
+    fs.writeFile(id, text, (err) => {
+      if (err) {
+        throw ('error writing counter');
+      } else {
+        items[id] = text;
+        callback(null, { id, text });
+      }
+    });
+  });
 };
 
 exports.readAll = (callback) => {

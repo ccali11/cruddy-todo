@@ -45,13 +45,6 @@ exports.getNextUniqueId = (callback) => {
       callback(err, id);
     });
   });
-
-
-  //make use of readCounter and writeCounter
-  // 1) should use error first callback pattern
-  // 2) should give an id as a zero padded string
-  // 3) should give the next id based on the count in the file
-  // 4) should update the counter file with the next value
   // counter = counter + 1;
   // return zeroPaddedNumber(counter);
 };
