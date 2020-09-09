@@ -12,25 +12,41 @@ exports.create = (text, callback) => {
   // If the dataDir DNE yet, make a brand new directory and first file starting at counter 00001 and add todo to the file
   // Otherwise getNextUniqueId and store a new todo
   counter.getNextUniqueId((err, id) => {
-    fs.writeFile(id, text, (err) => {
+    //     /targetfile/ + id
+    var filePath = path.join(exports.dataDir, `${id}.txt`);
+    fs.writeFile(filePath, text, (err)=>{
       if (err) {
-        throw ('error writing counter');
+        callback(err);
       } else {
-        items[id] = text;
-        callback(null, { id, text });
+        callback(null, {id, text});
       }
     });
   });
 };
 
+
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  fs.readdir(exports.dataDir, (err, files)=>{
+    var data = _.map(files, (file)=>{
+      var id = fs.basename(file, '.txt');
+      return {
+        id: id,
+        text: id
+      };
+    });
+    callback(null, data);
   });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
+  // fs.readdir(exports.dataDir, (err, id)=>{
+  //   todoList = _.map(files, (file)=>{
+  //     if (fs.basename(file, '.txt') === id) {
+  //       callback(null, {id: id, text: id});
+  //     }
+  //   })
+  // })
+
   var text = items[id];
   if (!text) {
     callback(new Error(`No item with id: ${id}`));
