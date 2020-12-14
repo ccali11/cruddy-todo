@@ -2,8 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const sprintf = require('sprintf-js').sprintf;
 
-var counter = 0;
-
 // Private helper functions ////////////////////////////////////////////////////
 
 // Zero padded numbers can only be represented as strings.
@@ -38,13 +36,17 @@ const writeCounter = (count, callback) => {
 
 // Public API - Fix this function //////////////////////////////////////////////
 
+
 exports.getNextUniqueId = (callback) => {
-  readCounter(null, (err, counter) => {
-    var newCounter = counter + 1;
-    writeCounter(newCounter, (err, id) => {
-      callback(err, id);
+  readCounter((err, currentCount) => {
+    writeCounter(currentCount + 1, (err, uniqueId) => {
+      callback(err, uniqueId);
     });
   });
+};
+
+exports.reformatId = (id) => {
+  return zeroPaddedNumber(Number(id));
 };
 
 // Configuration -- DO NOT MODIFY //////////////////////////////////////////////
