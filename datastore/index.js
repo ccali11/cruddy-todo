@@ -8,11 +8,7 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
-  // Write new file
-  // If the dataDir DNE yet, make a brand new directory and first file starting at counter 00001 and add todo to the file
-  // Otherwise getNextUniqueId and store a new todo
   counter.getNextUniqueId((err, id) => {
-    //     /targetfile/ + id
     var filePath = path.join(exports.dataDir, `${id}.txt`);
     fs.writeFile(filePath, text, (err)=>{
       if (err) {
